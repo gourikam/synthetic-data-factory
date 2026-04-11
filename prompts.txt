@@ -1,0 +1,52 @@
+# SEED PROMPTS FOR SYNTHETIC MEDICAL Q&A GENERATION
+# Each prompt instructs the teacher LLM to generate one Q&A pair.
+# Use these as the SYSTEM template — fill {topic} dynamically in generate.py
+# Format expected: {"question": "...", "answer": "...", "topic": "...", "difficulty": "basic|intermediate|clinical"}
+
+# ── SYMPTOMS & TRIAGE ──────────────────────────────────────────────────────────
+
+Generate a realistic patient-voiced question about chest pain and a clear, accurate medical answer that explains the most common causes, which symptoms indicate a cardiac emergency, and when to call an ambulance immediately. The answer should be 3–5 sentences, factual, and avoid diagnosing.
+
+Generate a clinical question a first-year medical student might ask about the differential diagnosis of shortness of breath, and a structured answer covering cardiac, pulmonary, and other systemic causes, with key distinguishing features for each category.
+
+Generate a question from a worried patient asking which headache symptoms are dangerous warning signs, and an answer that clearly lists red flag features (thunderclap onset, worst headache of life, neurological symptoms, fever with stiff neck) and explains why each warrants emergency evaluation.
+
+Generate a realistic scenario-based question where a patient describes mild symptoms and asks whether to go to the ER or an urgent care clinic, and an answer that gives a clear decision framework: ER for life-threatening symptoms, urgent care for non-emergency acute issues, and telehealth for minor concerns. Include 3 concrete examples of each.
+
+# ── MEDICATIONS ────────────────────────────────────────────────────────────────
+
+Generate a consumer question comparing over-the-counter painkillers (acetaminophen, ibuprofen, aspirin, naproxen), and a detailed answer covering mechanism, best use case, key contraindications, and maximum daily dose for each. The tone should be accessible to a non-medical reader.
+
+Generate a question about why doctors don't always prescribe antibiotics for infections, and an answer that explains the difference between bacterial and viral infections, how antibiotic resistance develops, and what patients can do instead for viral illnesses. Include a note on when antibiotics are genuinely necessary.
+
+Generate a question from a newly diagnosed Type 1 diabetic patient asking about the different types of insulin and when to take them, and a clear answer distinguishing rapid-acting, short-acting, intermediate-acting, and long-acting insulins, with a practical example of a typical daily regimen.
+
+# ── CHRONIC DISEASE MANAGEMENT ────────────────────────────────────────────────
+
+Generate an intermediate-level question about daily self-care strategies for Type 2 diabetes management, and a comprehensive answer covering blood glucose monitoring, diet (low glycemic index, carb counting), physical activity targets, foot care, medication adherence, and HbA1c goals. Answer should be actionable and specific.
+
+Generate a question from a patient recently diagnosed with hypothyroidism asking what to expect from treatment and lifestyle, and an answer that explains how levothyroxine works, how long before symptoms improve, what affects absorption (food, supplements, timing), and which symptoms to report to their doctor.
+
+Generate a question from a patient asking for diet and lifestyle changes to manage GERD without relying solely on medication, and an answer covering trigger foods to avoid (acidic, fatty, spicy, caffeine, alcohol), meal timing, head-of-bed elevation, weight management, and when medication like PPIs is still necessary.
+
+# ── LAB RESULTS & DIAGNOSTICS ─────────────────────────────────────────────────
+
+Generate a question from a patient who received a Complete Blood Count (CBC) result and doesn't understand what the components mean, and a clear answer explaining WBC (infection/immune), RBC and hemoglobin (anemia/oxygenation), hematocrit, platelets (clotting), and what high or low values of each typically suggest.
+
+Generate a question from a patient asking why their doctor flagged a high creatinine level in their blood test, and an answer that explains creatinine as a waste product of muscle metabolism filtered by kidneys, what elevated levels suggest about kidney function, the difference between acute and chronic elevation, and what follow-up tests are typically ordered.
+
+Generate a clinical question about interpreting HbA1c results across the normal, prediabetes, and diabetes ranges, and a precise answer with exact percentage thresholds (normal <5.7%, prediabetes 5.7–6.4%, diabetes ≥6.5%), what the number represents physiologically (3-month average blood glucose), and how often it should be tested.
+
+Generate a question from a patient confused about their thyroid panel results showing TSH, Free T3, and Free T4 values, and a clear answer explaining what each hormone measures, the feedback loop between the pituitary and thyroid, what high TSH + low T4 means (hypothyroidism) vs low TSH + high T4 (hyperthyroidism), and why TSH is usually tested first.
+
+Generate a question from a patient asking how to understand their lipid panel results including total cholesterol, LDL, HDL, and triglycerides, and an answer giving target values for each, explaining why LDL is "bad" and HDL is "good," what high triglycerides indicate, and the difference between dietary and genetic causes of dyslipidemia.
+
+# ── MENTAL HEALTH ──────────────────────────────────────────────────────────────
+
+Generate a question from someone unsure whether they need a psychiatrist or a psychologist or just a GP for their mental health concerns, and a clear answer explaining the difference: psychiatrists (medical doctors, can prescribe, handle complex/medication-needs cases), psychologists (therapy-focused, assessment), GPs (first point of contact, manage mild-moderate cases). Include guidance on when to escalate to a psychiatrist.
+
+# ── PREVENTIVE CARE ────────────────────────────────────────────────────────────
+
+Generate a question from a 40-year-old patient asking which cancer screening tests they should have and how often, and a comprehensive answer covering colorectal cancer (colonoscopy from 45), breast cancer (mammogram from 40–50 depending on guidelines), cervical cancer (Pap smear every 3 years from 21), lung cancer (low-dose CT for high-risk smokers), and prostate cancer (PSA discussion from 50). Note that guidelines vary by organization.
+
+Generate a question from a patient with a family history of heart disease asking what dietary changes will most reduce their cardiovascular risk, and an evidence-based answer covering the Mediterranean diet pattern, reducing saturated and trans fats, increasing omega-3s (fatty fish, flaxseed), fiber intake (oats, legumes), limiting sodium and added sugars, and the role of plant sterols. Include realistic daily targets where possible.
