@@ -1,0 +1,15 @@
+{
+  "raw_count": 186,
+  "after_rules": 186,
+  "after_dedup": 141,
+  "clean_count": 141,
+  "score_distribution": {
+    "1": 0,
+    "2": 0,
+    "3": 8,
+    "4": 133,
+    "5": 0
+  },
+  "avg_score": 3.94,
+  "retention_rate": 75.8
+}
