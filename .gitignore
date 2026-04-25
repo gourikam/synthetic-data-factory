@@ -9,4 +9,5 @@ __pycache__/
 *.pyc
 
 # raw data (too large for GitHub)
-data/
+data/raw.jsonl
+data/clean.jsonl
