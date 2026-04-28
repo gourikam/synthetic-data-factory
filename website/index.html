@@ -404,6 +404,8 @@ async function sendMessage() {
     }
   );
     const data = await res.json();
+    console.log('Status:', res.status);
+    console.log('Response:', JSON.stringify(data));
     hideTyping();
 
     if (data.error) {
