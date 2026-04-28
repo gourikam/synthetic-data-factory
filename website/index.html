@@ -157,7 +157,7 @@
       <div class="lg:col-span-8 bg-white border border-gray-200 rounded-xl flex flex-col h-[600px] shadow-sm overflow-hidden fade-in">
         <div class="p-4 border-b border-gray-100 flex items-center gap-3">
           <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span class="text-sm font-medium">Phi-3.5-Medical v1.0</span>
+          <span class="text-sm font-medium">MedQA Assistant v1.0</span>
         </div>
         <div class="flex-grow overflow-y-auto p-6 space-y-6" id="messages">
           <div class="flex items-start gap-4 max-w-[85%]">
@@ -392,8 +392,8 @@ async function sendMessage() {
         'Content-Type': 'application/json' 
       },
       body: JSON.stringify({
-      model: 'microsoft/Phi-3.5-mini-instruct',
-      provider: 'hf-inference',              // ← add this line
+      model: 'meta-llama/Llama-3.2-3B-Instruct',
+      provider: 'hf-inference',
       messages: [
         { role: 'system', content: 'You are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
         { role: 'user', content: q }
