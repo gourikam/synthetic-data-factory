@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MedQA - AI Medical Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#004ac6",
+          "secondary": "#516070",
+          "surface-container": "#edeeef",
+          "surface-container-low": "#f3f4f5",
+          "on-surface": "#191c1d",
+          "outline": "#737686",
+          "background": "#f8f9fa",
+        },
+        fontFamily: { "display": ["Manrope"], "h1": ["Manrope"], "h3": ["Manrope"] },
+        fontSize: {
+          "display": ["48px", {"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "h1":      ["36px", {"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "h3":      ["24px", {"lineHeight":"1.4","fontWeight":"600"}],
+          "body-lg": ["18px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "body-md": ["16px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "label-md":["14px", {"lineHeight":"1.4","letterSpacing":"0.02em","fontWeight":"500"}],
+          "label-sm":["12px", {"lineHeight":"1.2","letterSpacing":"0.05em","fontWeight":"600"}],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+
+  .pipeline-arrow::after {
+    content:"arrow_forward"; font-family:'Material Symbols Outlined';
+    position:absolute; right:-24px; top:50%; transform:translateY(-50%);
+    color:#737686; font-size:20px;
+  }
+  @media(max-width:1024px){
+    .pipeline-arrow::after { content:"arrow_downward"; right:50%; bottom:-24px; top:auto; transform:translateX(50%); }
+  }
+
+  .typing-dot { width:8px;height:8px;background:#737686;border-radius:50%;display:inline-block;animation:bounce 1.2s infinite; }
+  .typing-dot:nth-child(2){animation-delay:0.2s}
+  .typing-dot:nth-child(3){animation-delay:0.4s}
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease,transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  .bar-fill { width:0!important; transition:width 1.4s cubic-bezier(0.4,0,0.2,1); }
+  .bar-fill.animated { width:var(--tw) !important; }
+</style>
+</head>
+<body class="bg-background text-on-surface" style="font-family:Inter,sans-serif">
+
+<!-- HEADER -->
+<header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 shadow-sm">
+  <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
+    <span class="text-xl font-bold tracking-tighter text-blue-600" style="font-family:Manrope,sans-serif">MedQA</span>
+    <nav class="hidden md:flex items-center gap-8">
+      <a class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1" href="#pipeline">Pipeline</a>
+      <a class="text-gray-600 font-medium hover:text-blue-600 transition-colors" href="#chat">Chat</a>
+      <a class="text-gray-600 font-medium hover:text-blue-600 transition-colors" href="#results">Results</a>
+    </nav>
+    <a class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+       href="https://huggingface.co/gourikam/phi3-medical-qa" target="_blank">View on HuggingFace</a>
+  </div>
+</header>
+
+<main>
+
+<!-- PIPELINE -->
+<section class="py-20 max-w-7xl mx-auto px-6" id="pipeline">
+  <div class="text-center mb-16 fade-in">
+    <span class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4 block">Process Architecture</span>
+    <h2 class="text-h1 font-h1 mb-6">How It Works</h2>
+    <p class="text-body-lg text-secondary max-w-2xl mx-auto">A rigorous synthetic data pipeline and fine-tuning workflow optimized for clinical diagnostic accuracy.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+    <div class="bg-white border border-gray-200 p-6 rounded-xl relative pipeline-arrow hover:border-blue-500 hover:shadow-md transition-all duration-300 fade-in">
+      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-blue-600">database</span>
+      </div>
+      <h3 class="text-h3 font-h3 mb-2">Data Generation</h3>
+      <p class="text-gray-500 text-sm">186 Q&A pairs generated via Llama-3</p>
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Source: Llama-3.3-70B</span>
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 p-6 rounded-xl relative pipeline-arrow hover:border-blue-500 hover:shadow-md transition-all duration-300 fade-in" style="transition-delay:0.1s">
+      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-blue-600">filter_alt</span>
+      </div>
+      <h3 class="text-h3 font-h3 mb-2">Quality Filter</h3>
+      <p class="text-gray-500 text-sm">141 pairs after dedup + scoring</p>
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Jaccard Deduplication</span>
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 p-6 rounded-xl relative pipeline-arrow hover:border-blue-500 hover:shadow-md transition-all duration-300 fade-in" style="transition-delay:0.2s">
+      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-blue-600">memory</span>
+      </div>
+      <h3 class="text-h3 font-h3 mb-2">Fine-Tuning</h3>
+      <p class="text-gray-500 text-sm">Phi-3.5 trained with LoRA on T4 GPU</p>
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Unsloth · Loss 0.20</span>
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 p-6 rounded-xl hover:border-blue-500 hover:shadow-md transition-all duration-300 fade-in" style="transition-delay:0.3s">
+      <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-blue-600">chart_data</span>
+      </div>
+      <h3 class="text-h3 font-h3 mb-2">Evaluation</h3>
+      <p class="text-gray-500 text-sm">118% ROUGE-L improvement</p>
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Validated 15/15</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section class="bg-gray-50 py-20" id="chat">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12 fade-in">
+      <h2 class="text-h1 font-h1">Try It</h2>
+      <p class="text-body-lg text-secondary mt-2">Interact with the fine-tuned medical assistant</p>
+    </div>
+
+    <!-- Token input -->
+    <div class="max-w-xl mx-auto mb-8 fade-in" id="token-section">
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
+        <span class="material-symbols-outlined text-amber-500 mt-0.5 shrink-0">info</span>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-amber-800 mb-1">HuggingFace Read Token Required</p>
+          <p class="text-xs text-amber-700 mb-3">Get a free token at huggingface.co → Settings → Access Tokens (read access)</p>
+          <div class="flex gap-2">
+            <input id="hf-token-input" type="password" placeholder="hf_xxxxxxxxxxxx"
+              class="flex-1 border border-amber-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 bg-white"/>
+            <button onclick="saveToken()"
+              class="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-amber-600 transition-colors">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Chat UI -->
+      <div class="lg:col-span-8 bg-white border border-gray-200 rounded-xl flex flex-col h-[600px] shadow-sm overflow-hidden fade-in">
+        <div class="p-4 border-b border-gray-100 flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <span class="text-sm font-medium">Phi-3.5-Medical v1.0</span>
+        </div>
+        <div class="flex-grow overflow-y-auto p-6 space-y-6" id="messages">
+          <div class="flex items-start gap-4 max-w-[85%]">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-blue-600 text-sm">robot_2</span>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-2xl rounded-tl-none">
+              <p class="text-sm">Hello. I am the MedQA assistant fine-tuned on clinical datasets. How can I help you today?</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-6 border-t border-gray-100">
+          <div class="flex flex-wrap gap-2 mb-4" id="suggestions">
+            <button onclick="useSuggestion(this)" class="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">What does high HbA1c mean?</button>
+            <button onclick="useSuggestion(this)" class="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">Chest pain emergency signs?</button>
+            <button onclick="useSuggestion(this)" class="text-xs bg-blue-50 text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">How to manage Type 2 diabetes?</button>
+          </div>
+          <div class="flex gap-4">
+            <input id="chat-input" type="text" placeholder="Type a medical query..."
+              class="flex-grow border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all"
+              onkeydown="if(event.key==='Enter') sendMessage()"/>
+            <button onclick="sendMessage()"
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-blue-700 active:scale-95 transition-all">
+              Send <span class="material-symbols-outlined text-base">send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model details -->
+      <div class="lg:col-span-4 space-y-6 fade-in">
+        <div class="bg-white border border-gray-200 p-8 rounded-xl shadow-sm">
+          <h4 class="text-h3 font-h3 mb-6">Model Context</h4>
+          <div class="space-y-5">
+            <div>
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Model Name</span>
+              <p class="font-mono text-sm text-blue-600 font-semibold">gourikam/phi3-medical-qa</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Base Architecture</span>
+              <p class="text-sm">Phi-3.5-mini-instruct</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Training Method</span>
+              <p class="text-sm">LoRA (r=16, alpha=32)</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Final Loss</span>
+              <p class="text-sm font-semibold text-green-600">0.20</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Specialization</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">Medical Q&A</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+          <h4 class="text-sm font-semibold mb-4">Training Stats</h4>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between"><span class="text-gray-500">Dataset size</span><span class="font-semibold">141 pairs</span></div>
+            <div class="flex justify-between"><span class="text-gray-500">Epochs</span><span class="font-semibold">5</span></div>
+            <div class="flex justify-between"><span class="text-gray-500">GPU</span><span class="font-semibold">T4 (free)</span></div>
+            <div class="flex justify-between"><span class="text-gray-500">Trainable params</span><span class="font-semibold">0.78%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="py-20 max-w-7xl mx-auto px-6" id="results">
+  <div class="text-center mb-16 fade-in">
+    <span class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4 block">Benchmark Performance</span>
+    <h2 class="text-h1 font-h1">Evaluation Results</h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+    <div class="bg-white border border-gray-200 p-8 rounded-xl text-center shadow-sm fade-in">
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">ROUGE-L Score</p>
+      <h4 class="text-display font-display text-blue-600">0.513</h4>
+      <p class="text-gray-500 text-sm mt-2">Fine-tuned model</p>
+    </div>
+    <div class="bg-white border border-gray-200 p-8 rounded-xl text-center shadow-sm fade-in" style="transition-delay:0.1s">
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Improvement</p>
+      <div class="flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-green-500">trending_up</span>
+        <h4 class="text-display font-display text-green-600">+118%</h4>
+      </div>
+      <p class="text-gray-500 text-sm mt-2">vs. Base Model</p>
+    </div>
+    <div class="bg-white border border-gray-200 p-8 rounded-xl text-center shadow-sm fade-in" style="transition-delay:0.2s">
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Validation Set</p>
+      <h4 class="text-display font-display text-on-surface">15/15</h4>
+      <p class="text-gray-500 text-sm mt-2">Test Questions Won</p>
+    </div>
+  </div>
+
+  <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200 fade-in">
+    <h4 class="text-h3 font-h3 mb-8">Performance Comparison</h4>
+    <div class="space-y-10">
+      <div class="space-y-3">
+        <div class="flex justify-between items-end">
+          <div>
+            <p class="text-sm font-bold">Fine-tuned Phi-3.5</p>
+            <p class="text-xs text-gray-500">Optimized with Medical Synthetic Data</p>
+          </div>
+          <span class="text-h3 font-h3 text-blue-600">0.513</span>
+        </div>
+        <div class="h-4 bg-white rounded-full overflow-hidden">
+          <div class="h-full bg-blue-600 rounded-full bar-fill" style="--tw:51.3%"></div>
+        </div>
+      </div>
+      <div class="space-y-3 opacity-70">
+        <div class="flex justify-between items-end">
+          <div>
+            <p class="text-sm font-bold">Base Phi-3.5-mini</p>
+            <p class="text-xs text-gray-500">Standard Instruct Weights</p>
+          </div>
+          <span class="text-h3 font-h3 text-gray-500">0.235</span>
+        </div>
+        <div class="h-4 bg-white rounded-full overflow-hidden">
+          <div class="h-full bg-gray-400 rounded-full bar-fill" style="--tw:23.5%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 flex items-center justify-center gap-6">
+      <div class="flex items-center gap-2"><div class="w-3 h-3 bg-blue-600 rounded-sm"></div><span class="text-xs">MedQA Optimized</span></div>
+      <div class="flex items-center gap-2"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div><span class="text-xs">Out-of-box Baseline</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="bg-gray-50 border-t border-gray-200 py-12 mt-8">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
+    <div>
+      <span class="text-lg font-bold text-blue-600 block mb-1" style="font-family:Manrope,sans-serif">MedQA</span>
+      <p>Built with Llama-3, Phi-3.5, LoRA, Unsloth · Model on HuggingFace</p>
+    </div>
+    <div class="flex gap-8">
+      <a class="hover:text-blue-600 transition-colors" href="#pipeline">Pipeline</a>
+      <a class="hover:text-blue-600 transition-colors" href="#chat">Chat</a>
+      <a class="hover:text-blue-600 transition-colors" href="#results">Results</a>
+    </div>
+    <a href="https://huggingface.co/gourikam/phi3-medical-qa" target="_blank"
+       class="flex items-center gap-2 text-blue-600 font-semibold hover:underline">
+      <span class="material-symbols-outlined text-base">open_in_new</span>HuggingFace Model
+    </a>
+  </div>
+</footer>
+
+<script>
+// ── TOKEN MANAGEMENT ──────────────────────────────────────────────
+// CONCEPT: sessionStorage clears when the tab closes — safer than
+// localStorage which persists forever. The token stays in the browser only.
+let HF_TOKEN = sessionStorage.getItem('hf_token') || '';
+if (HF_TOKEN) document.getElementById('token-section').style.display = 'none';
+
+function saveToken() {
+  const val = document.getElementById('hf-token-input').value.trim();
+  if (!val.startsWith('hf_')) { alert('Token should start with hf_'); return; }
+  HF_TOKEN = val;
+  sessionStorage.setItem('hf_token', HF_TOKEN);
+  document.getElementById('token-section').style.display = 'none';
+  addMsg('assistant', 'Token saved! Ask me anything about medicine.');
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────
+const msgsEl = document.getElementById('messages');
+
+function addMsg(role, text) {
+  const isUser = role === 'user';
+  const d = document.createElement('div');
+  d.className = `flex items-start gap-4 ${isUser ? 'max-w-[85%] ml-auto flex-row-reverse' : 'max-w-[85%]'}`;
+  d.innerHTML = `
+    <div class="w-8 h-8 rounded-full ${isUser ? 'bg-blue-600' : 'bg-blue-100'} flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-sm ${isUser ? 'text-white' : 'text-blue-600'}">${isUser ? 'person' : 'robot_2'}</span>
+    </div>
+    <div class="${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100'} p-4 rounded-2xl ${isUser ? 'rounded-tr-none' : 'rounded-tl-none'}">
+      <p class="text-sm">${text}</p>
+    </div>`;
+  msgsEl.appendChild(d);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+function showTyping() {
+  const d = document.createElement('div');
+  d.id = 'typing'; d.className = 'flex items-start gap-4 max-w-[85%]';
+  d.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-blue-600 text-sm">robot_2</span>
+    </div>
+    <div class="bg-gray-100 p-4 rounded-2xl rounded-tl-none flex gap-2 items-center">
+      <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+    </div>`;
+  msgsEl.appendChild(d);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+function hideTyping() { const el = document.getElementById('typing'); if(el) el.remove(); }
+
+function useSuggestion(btn) {
+  document.getElementById('chat-input').value = btn.textContent;
+  document.getElementById('suggestions').style.display = 'none';
+  sendMessage();
+}
+
+async function sendMessage() {
+  const q = document.getElementById('chat-input').value.trim();
+  if (!q) return;
+  if (!HF_TOKEN) {
+    document.getElementById('token-section').style.display = 'block';
+    alert('Please enter your HuggingFace token first.');
+    return;
+  }
+
+  addMsg('user', q);
+  document.getElementById('chat-input').value = '';
+  showTyping();
+
+  // CONCEPT: We use return_full_text: false so HuggingFace returns ONLY
+  // the generated answer tokens, not the whole prompt repeated back.
+  // This matches how we trained — same <|user|> template format.
+  const prompt = `<|user|>\n${q}<|end|>\n<|assistant|>\n`;
+
+  try {
+    const res = await fetch(
+      'https://api-inference.huggingface.co/models/gourikam/phi3-medical-qa',
+      {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${HF_TOKEN}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          inputs: prompt,
+          parameters: { max_new_tokens: 250, temperature: 0.1, return_full_text: false, do_sample: true }
+        })
+      }
+    );
+    const data = await res.json();
+    hideTyping();
+
+    if (data.error) {
+      // CONCEPT: HuggingFace "cold starts" models after inactivity (~20s warm-up).
+      // This is a known behaviour of the free inference API, not a real error.
+      const msg = data.error.includes('loading')
+        ? 'Model is warming up (takes ~20s on first request). Please try again shortly!'
+        : `API error: ${data.error}`;
+      addMsg('assistant', msg);
+      return;
+    }
+
+    const raw = data[0]?.generated_text || '';
+    // Strip any trailing special tokens the model might emit
+    const clean = raw.replace(/<\|end\|>[\s\S]*$/,'').trim();
+    addMsg('assistant', clean || 'Sorry, I could not generate a response.');
+
+  } catch(err) {
+    hideTyping();
+    addMsg('assistant', 'Network error — check your connection and try again.');
+    console.error(err);
+  }
+}
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────────────
+// CONCEPT: IntersectionObserver is the modern way to detect when elements
+// enter the viewport. It's more performant than scroll event listeners
+// because the browser handles the detection natively.
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible', 'animated');
+    io.unobserve(e.target);
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in, .bar-fill').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
