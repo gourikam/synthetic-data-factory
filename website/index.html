@@ -65,7 +65,7 @@
   <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
     <span class="text-xl font-bold tracking-tighter text-blue-600" style="font-family:Manrope,sans-serif">MedQA</span>
     <nav class="hidden md:flex items-center gap-8">
-      <a class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1" href="#pipeline">Pipeline</a>
+      <a class="text-gray-600 font-medium hover:text-blue-600 transition-colors" href="#pipeline">Pipeline</a>
       <a class="text-gray-600 font-medium hover:text-blue-600 transition-colors" href="#chat">Chat</a>
       <a class="text-gray-600 font-medium hover:text-blue-600 transition-colors" href="#results">Results</a>
     </nav>
@@ -384,12 +384,12 @@ async function sendMessage() {
 
   try {
     const res = await fetch(
-      'https://api-inference.huggingface.co/models/gourikam/phi3-medical-qa',
+      'https://api-inference.huggingface.co/models/microsoft/Phi-3.5-mini-instruct',
       {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${HF_TOKEN}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          inputs: prompt,
+          inputs: `<|system|>\nYou are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease management, lab results, and preventive care. Be specific, factual, and concise.\n<|end|>\n<|user|>\n${q}<|end|>\n<|assistant|>\n`,
           parameters: { max_new_tokens: 250, temperature: 0.1, return_full_text: false, do_sample: true }
         })
       }
@@ -432,6 +432,33 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 
 document.querySelectorAll('.fade-in, .bar-fill').forEach(el => io.observe(el));
+
+// ── ACTIVE NAV ON SCROLL ──────────────────────────────────────────
+// CONCEPT: IntersectionObserver watches all three sections.
+// When a section is >40% visible, we mark its nav link as active.
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    navLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === `#${id}`;
+      // Active state
+      link.classList.toggle('text-blue-600', isActive);
+      link.classList.toggle('font-semibold', isActive);
+      link.classList.toggle('border-b-2', isActive);
+      link.classList.toggle('border-blue-600', isActive);
+      link.classList.toggle('pb-1', isActive);
+      // Inactive state
+      link.classList.toggle('text-gray-600', !isActive);
+      link.classList.toggle('font-medium', !isActive);
+    });
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => navObserver.observe(s));
 </script>
 </body>
 </html>
