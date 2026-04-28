@@ -384,16 +384,24 @@ async function sendMessage() {
 
   try {
     const res = await fetch(
-      'https://api-inference.huggingface.co/models/microsoft/Phi-3.5-mini-instruct',
-      {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${HF_TOKEN}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          inputs: `<|system|>\nYou are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease management, lab results, and preventive care. Be specific, factual, and concise.\n<|end|>\n<|user|>\n${q}<|end|>\n<|assistant|>\n`,
-          parameters: { max_new_tokens: 250, temperature: 0.1, return_full_text: false, do_sample: true }
-        })
-      }
-    );
+    'https://router.huggingface.co/v1/chat/completions',
+    {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Bearer ${HF_TOKEN}`, 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({
+        model: 'microsoft/Phi-3.5-mini-instruct',
+        messages: [
+          { role: 'system', content: 'You are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
+          { role: 'user', content: q }
+        ],
+        max_tokens: 250,
+        temperature: 0.1,
+      })
+    }
+  );
     const data = await res.json();
     hideTyping();
 
@@ -407,10 +415,8 @@ async function sendMessage() {
       return;
     }
 
-    const raw = data[0]?.generated_text || '';
-    // Strip any trailing special tokens the model might emit
-    const clean = raw.replace(/<\|end\|>[\s\S]*$/,'').trim();
-    addMsg('assistant', clean || 'Sorry, I could not generate a response.');
+    const clean = data.choices?.[0]?.message?.content?.trim() || 'Sorry, could not generate a response.';
+    addMsg('assistant', clean);
 
   } catch(err) {
     hideTyping();
