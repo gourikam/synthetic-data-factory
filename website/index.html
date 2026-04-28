@@ -140,10 +140,10 @@
       <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
         <span class="material-symbols-outlined text-amber-500 mt-0.5 shrink-0">info</span>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-800 mb-1">HuggingFace Read Token Required</p>
-          <p class="text-xs text-amber-700 mb-3">Get a free token at huggingface.co → Settings → Access Tokens (read access)</p>
+          <p class="text-sm font-semibold text-amber-800 mb-1">Groq API Key Required</p>
+          <p class="text-xs text-amber-700 mb-3">Get a free key at console.groq.com → API Keys (takes 2 minutes)</p>
           <div class="flex gap-2">
-            <input id="hf-token-input" type="password" placeholder="hf_xxxxxxxxxxxx"
+            <input id="hf-token-input" type="password" placeholder="gsk_xxxxxxxxxxxx"
               class="flex-1 border border-amber-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 bg-white"/>
             <button onclick="saveToken()"
               class="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-amber-600 transition-colors">Save</button>
@@ -318,7 +318,7 @@ if (HF_TOKEN) document.getElementById('token-section').style.display = 'none';
 
 function saveToken() {
   const val = document.getElementById('hf-token-input').value.trim();
-  if (!val.startsWith('hf_')) { alert('Token should start with hf_'); return; }
+  if (!val.startsWith('gsk_')) { alert('Token should start with gsk_'); return; }
   HF_TOKEN = val;
   sessionStorage.setItem('hf_token', HF_TOKEN);
   document.getElementById('token-section').style.display = 'none';
@@ -384,25 +384,24 @@ async function sendMessage() {
 
   try {
     const res = await fetch(
-    'https://router.huggingface.co/v1/chat/completions',
-    {
-      method: 'POST',
-      headers: { 
-        'Authorization': `Bearer ${HF_TOKEN}`, 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify({
-      model: 'meta-llama/Llama-3.2-3B-Instruct',
-      provider: 'hf-inference',
-      messages: [
-        { role: 'system', content: 'You are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
-        { role: 'user', content: q }
-      ],
-      max_tokens: 250,
-      temperature: 0.1,
-    })
-    }
-  );
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${HF_TOKEN}`,  // user will paste Groq key instead
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: 'You are MedQA, a medical assistant fine-tuned on clinical data. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
+            { role: 'user', content: q }
+          ],
+          max_tokens: 250,
+          temperature: 0.1,
+        })
+      }
+    );
     const data = await res.json();
     console.log('Status:', res.status);
     console.log('Response:', JSON.stringify(data));
