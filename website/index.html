@@ -392,23 +392,23 @@ async function sendMessage() {
         'Content-Type': 'application/json' 
       },
       body: JSON.stringify({
-        model: 'microsoft/Phi-3.5-mini-instruct',
-        messages: [
-          { role: 'system', content: 'You are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
-          { role: 'user', content: q }
-        ],
-        max_tokens: 250,
-        temperature: 0.1,
-      })
+      model: 'microsoft/Phi-3.5-mini-instruct',
+      provider: 'hf-inference',              // ← add this line
+      messages: [
+        { role: 'system', content: 'You are MedQA, a medical assistant specialized in patient education. Answer questions about symptoms, medications, chronic disease, lab results, and preventive care. Be specific, factual, and 3-5 sentences.' },
+        { role: 'user', content: q }
+      ],
+      max_tokens: 250,
+      temperature: 0.1,
+    })
     }
   );
     const data = await res.json();
     hideTyping();
 
     if (data.error) {
-      // CONCEPT: HuggingFace "cold starts" models after inactivity (~20s warm-up).
-      // This is a known behaviour of the free inference API, not a real error.
-      const msg = data.error.includes('loading')
+      const errStr = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
+      const msg = errStr.includes('loading')
         ? 'Model is warming up (takes ~20s on first request). Please try again shortly!'
         : `API error: ${data.error}`;
       addMsg('assistant', msg);
